@@ -187,8 +187,36 @@ namespace UnityMeshAgents
         //what bools are we missing?
 
 
+        /// <summary>
+        /// Checks if the provided NavMeshAgent is currently stopped.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for stopped state.</param>
+        /// <returns>True if the agent is stopped, otherwise false.</returns>
+        public static bool IsStopped(NavMeshAgent navAgent)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return false;
+            }
 
+            return navAgent.isStopped;
+        }
+        /// <summary>
+        /// Checks if the provided NavMeshAgent is currently moving.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for movement.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
+        /// <returns>True if the agent is moving, otherwise false.</returns>
+        public static bool IsMoving(NavMeshAgent navAgent)
+        {
+            if (navAgent == null)
+            {
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
+            }
 
+            return navAgent.velocity.sqrMagnitude > 0f;
+        }
         /// <summary>
         /// Determines if the NavMeshAgent has reached its destination.
         /// </summary>
@@ -299,21 +327,6 @@ namespace UnityMeshAgents
             }
 
             return navAgent.pathPending;
-        }
-        /// <summary>
-        /// Checks if the provided NavMeshAgent is currently stopped.
-        /// </summary>
-        /// <param name="navAgent">The NavMeshAgent to check for stopped state.</param>
-        /// <returns>True if the agent is stopped, otherwise false.</returns>
-        public static bool IsAgentStopped(NavMeshAgent navAgent)
-        {
-            if (navAgent == null)
-            {
-                Debug.LogError("NavMeshAgent is null.");
-                return false;
-            }
-
-            return navAgent.isStopped;
         }
         /// <summary>
         /// Checks if the provided NavMeshAgent is currently on an off-mesh link.
@@ -464,12 +477,12 @@ namespace UnityMeshAgents
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent for which the auto-braking behavior is being set.</param>
         /// <param name="enableAutoBraking">True to enable auto-braking, False to disable it.</param>
-        public static void SetAutoBraking(NavMeshAgent navAgent, bool enableAutoBraking)
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
+        public static void SetAutoBrakingEnabled(NavMeshAgent navAgent, bool enableAutoBraking)
         {
             if (navAgent == null)
             {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             navAgent.autoBraking = enableAutoBraking;
@@ -479,12 +492,12 @@ namespace UnityMeshAgents
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent for which the auto-repath behavior is being set.</param>
         /// <param name="enableAutoRepath">True to enable auto-repath, False to disable it.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>"
         public static void SetAutoRepath(NavMeshAgent navAgent, bool enableAutoRepath)
         {
             if (navAgent == null)
             {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             navAgent.autoRepath = enableAutoRepath;
@@ -494,12 +507,12 @@ namespace UnityMeshAgents
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent whose angular speed is to be set.</param>
         /// <param name="newAngularSpeed">The new angular speed to assign to the agent.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>"
         public static void SetAngularSpeed(NavMeshAgent navAgent, float newAngularSpeed)
         {
             if (navAgent == null)
             {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             navAgent.angularSpeed = newAngularSpeed;
@@ -509,12 +522,12 @@ namespace UnityMeshAgents
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent whose speed is to be set.</param>
         /// <param name="newSpeed">The new speed to assign to the agent.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
         public static void SetSpeed(NavMeshAgent navAgent, float newSpeed)
         {
             if (navAgent == null)
             {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             navAgent.speed = newSpeed;
