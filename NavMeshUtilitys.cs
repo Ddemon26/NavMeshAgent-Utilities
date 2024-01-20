@@ -5,19 +5,19 @@ using UnityEngine.AI;
 
 namespace UnityMeshAgents
 {
-    public static class AgentDo
+    public static class Agent
     {
         /// <summary>
         /// Applies the position and rotation of a given transform to a NavMeshAgent.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent to which the transform should be applied.</param>
+        /// <param name="navAgent">The NavMeshAgent to which the transform should be applied.</param>
         /// <param name="targetTransform">The Transform whose position and rotation should be applied to the agent.</param>
         /// <exception cref="ArgumentNullException">Thrown if either argument is null.</exception>
-        public static void ApplyPositionAndRotationToAgent(NavMeshAgent agent, Transform targetTransform)
+        public static void ApplyTransform(NavMeshAgent navAgent, Transform targetTransform)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             if (targetTransform == null)
@@ -25,110 +25,177 @@ namespace UnityMeshAgents
                 throw new ArgumentNullException(nameof(targetTransform), "Target Transform cannot be null.");
             }
 
-            agent.transform.Translate(targetTransform.position, Space.World);
-            agent.transform.Rotate(targetTransform.eulerAngles, Space.World);
+            navAgent.transform.Translate(targetTransform.position, Space.World);
+            navAgent.transform.Rotate(targetTransform.eulerAngles, Space.World);
         }
         /// <summary>
         /// Applies position and rotation vectors to a NavMeshAgent.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent to which the vectors should be applied.</param>
+        /// <param name="navAgent">The NavMeshAgent to which the vectors should be applied.</param>
         /// <param name="position">The position vector to apply.</param>
         /// <param name="rotation">The rotation vector to apply.</param>
         /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void ApplyAgentVectors(NavMeshAgent agent, Vector3 position, Vector3 rotation)
+        public static void ApplyVectors(NavMeshAgent navAgent, Vector3 position, Vector3 rotation)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             // Optional: Additional checks can be added here if there are specific constraints on position or rotation
 
-            agent.transform.Translate(position, Space.World);
-            agent.transform.Rotate(rotation, Space.World);
+            navAgent.transform.Translate(position, Space.World);
+            navAgent.transform.Rotate(rotation, Space.World);
         }
         /// <summary>
         /// Sets the destination for a NavMeshAgent.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent whose destination is being set.</param>
+        /// <param name="navAgent">The NavMeshAgent whose destination is being set.</param>
         /// <param name="destination">The destination to set for the agent.</param>
         /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void SetAgentDestination(NavMeshAgent agent, Vector3 destination)
+        public static void SetDestination(NavMeshAgent navAgent, Vector3 destination)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             // Optional: Add additional validation for destination if necessary
 
-            agent.SetDestination(destination);
+            navAgent.SetDestination(destination);
         }
         /// <summary>
         /// Sets the destination for a NavMeshAgent with an offset.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent to which Set a Destination.</param>
+        /// <param name="navAgent">The NavMeshAgent to which Set a Destination.</param>
         /// <param name="destination">The destination to apply</param>
         /// <param name="offset">The offset to apply</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void SetDestinationWithOffset(NavMeshAgent agent, Vector3 destination, Vector3 offset)
+        public static void SetDestinationWithOffset(NavMeshAgent navAgent, Vector3 destination, Vector3 offset)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
-            agent.SetDestination(destination + offset);
+            navAgent.SetDestination(destination + offset);
         }
         /// <summary>
         /// Finds the closest navmesh edge to the NavMeshAgent and outputs the result.
         /// </summary>
         /// <param name="hit">The hit information for the closest edge. This is an output parameter.</param>
-        /// <param name="agent">The NavMeshAgent for which the closest edge is being found.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void FindClosestNavMeshEdge(out NavMeshHit hit, NavMeshAgent agent)
+        /// <param name="navAgent">The NavMeshAgent for which the closest edge is being found.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the provided NavMeshAgent is null.</exception>
+        public static void FindClosestNavMeshEdge(NavMeshAgent navAgent, out NavMeshHit hit)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
-            agent.FindClosestEdge(out hit);
+            navAgent.FindClosestEdge(out hit);
         }
         /// <summary>
         /// Toggle the NavMeshAgent's pathfinding on or off.
         /// </summary>
-        /// <param name="agent"></param>
-        /// <param name="isEnabled"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void ToggleAgentPathfinding(NavMeshAgent agent, bool isEnabled)
+        /// <param name="navAgent">The NavMeshAgent to control.</param>
+        /// <param name="isEnabled">True to enable pathfinding, False to disable it.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the provided NavMeshAgent is null.</exception>
+        public static void TogglePathfinding(NavMeshAgent navAgent, bool isEnabled)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
-            agent.enabled = isEnabled;
+            navAgent.enabled = isEnabled;
         }
         /// <summary>
         /// Stops the NavMeshAgent from moving and clears its current path.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent to be reset.</param>
+        /// <param name="navAgent">The NavMeshAgent to be reset.</param>
         /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void ResetAgentPath(NavMeshAgent agent)
+        public static void ResetPath(NavMeshAgent navAgent)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
-            agent.ResetPath();
+            navAgent.ResetPath();
         }
+        /// <summary>
+        /// Warps the NavMeshAgent to a specified new position.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to warp.</param>
+        /// <param name="newPosition">The new position to warp the agent to.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
+        public static void WarpToPosition(NavMeshAgent navAgent, Vector3 newPosition)
+        {
+            if (navAgent == null)
+            {
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
+            }
+
+            navAgent.Warp(newPosition);
+        }
+        /// <summary>
+        /// Calculates a path to a specified target for the NavMeshAgent and immediately assigns it to the agent's path.
+        /// Use this method when you want the agent to start following the new path right away.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent whose path is being calculated and assigned.</param>
+        /// <param name="target">The destination target for the path calculation.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
+        public static void CalculateAndAssignPath(NavMeshAgent navAgent, Vector3 target)
+        {
+            if (navAgent == null)
+            {
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
+            }
+
+            navAgent.CalculatePath(target, navAgent.path);
+        }
+        /// <summary>
+        /// Samples a position on the NavMesh that is closest to a specified target direction.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to use for sampling.</param>
+        /// <param name="targetDirection">The target direction from the agent's current position.</param>
+        /// <param name="maxDistance">The maximum distance to search for a valid position.</param>
+        /// <param name="areaMask">The area mask specifying which NavMesh areas are considered.</param>
+        public static void SamplePositionOnNavMesh(NavMeshAgent navAgent, Vector3 targetDirection, float maxDistance, int areaMask)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            NavMesh.SamplePosition(targetDirection, out NavMeshHit hit, maxDistance, areaMask);
+        }
+        /// <summary>
+        /// Sets whether the provided NavMeshAgent should follow its path or stop.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to control.</param>
+        /// <param name="shouldFollowPath">True to enable path following, False to stop the agent.</param>
+        public static void TogglePathFollowing(NavMeshAgent navAgent, bool shouldFollowPath)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+            navAgent.isStopped = !shouldFollowPath;
+        }
+        //what bools are we missing?
+
+
+
+
         /// <summary>
         /// Determines if the NavMeshAgent has reached its destination.
         /// </summary>
         /// <param name="agent">The NavMeshAgent to check.</param>
         /// <returns>True if the agent has reached its destination, false otherwise.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static bool IsAgentAtDestination(NavMeshAgent agent)
+        public static bool HasReachedDestination(NavMeshAgent agent)
         {
             if (agent == null)
             {
@@ -142,183 +209,316 @@ namespace UnityMeshAgents
             return isPathComplete && isWithinStoppingDistance && isStationary;
         }
         /// <summary>
-        /// Warps the NavMeshAgent to a specified new position.
-        /// </summary>
-        /// <param name="agent">The NavMeshAgent to warp.</param>
-        /// <param name="newPosition">The new position to warp the agent to.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void WarpAgentToPosition(NavMeshAgent agent, Vector3 newPosition)
-        {
-            if (agent == null)
-            {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
-            }
-
-            agent.Warp(newPosition);
-        }
-        /// <summary>
         /// Calculates a path for the NavMeshAgent to a specified target and outputs the path.
+        /// This method is useful for when you need the path for custom processing or analysis before applying it to the agent.
         /// </summary>
-        /// <param name="agent">The NavMeshAgent for which the path is calculated.</param>
+        /// <param name="navAgent">The NavMeshAgent for which the path is calculated.</param>
         /// <param name="target">The destination target for the path calculation.</param>
         /// <param name="path">The calculated path as an output parameter. This is only valid if the method returns true.</param>
         /// <returns>True if the path calculation is successful, false otherwise.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static bool CalculatePathToTarget(NavMeshAgent agent, Vector3 target, out NavMeshPath path)
+        public static bool TryCalculateNavPath(NavMeshAgent navAgent, Vector3 target, out NavMeshPath path)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
-                throw new ArgumentNullException(nameof(agent), "NavMeshAgent cannot be null.");
+                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
 
             path = new NavMeshPath();
-            return agent.CalculatePath(target, path);
+            return navAgent.CalculatePath(target, path);
         }
-        public static bool SamplePosition(Vector3 sourcePosition, out Vector3 nearestPoint, float maxDistance, int areaMask)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent has a complete path.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for a complete path.</param>
+        /// <returns>True if the agent has a complete path, otherwise false.</returns>
+        public static bool HasCompletePath(NavMeshAgent navAgent)
         {
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(sourcePosition, out hit, maxDistance, areaMask))
-            {
-                nearestPoint = hit.position;
-                return true;
-            }
-            nearestPoint = Vector3.zero;
-            return false;
+            return navAgent != null && navAgent.pathStatus == NavMeshPathStatus.PathComplete;
         }
-        public static bool IsPathComplete(NavMeshAgent agent)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent has a partial path.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for a partial path.</param>
+        /// <returns>True if the agent has a partial path, otherwise false.</returns>
+        public static bool HasPartialPath(NavMeshAgent navAgent)
         {
-            return agent != null && agent.pathStatus == NavMeshPathStatus.PathComplete;
+            return navAgent != null && navAgent.pathStatus == NavMeshPathStatus.PathPartial;
         }
-        public static bool IsPathPartial(NavMeshAgent agent)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent has an invalid path.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for an invalid path.</param>
+        /// <returns>True if the agent has an invalid path, otherwise false.</returns>
+        public static bool HasInvalidPath(NavMeshAgent navAgent)
         {
-            return agent != null && agent.pathStatus == NavMeshPathStatus.PathPartial;
+            return navAgent != null && navAgent.pathStatus == NavMeshPathStatus.PathInvalid;
         }
-        public static bool IsPathInvalid(NavMeshAgent agent)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent is currently on the NavMesh.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for NavMesh presence.</param>
+        /// <returns>True if the agent is on the NavMesh, otherwise false.</returns>
+        public static bool IsOnNavMesh(NavMeshAgent navAgent)
         {
-            return agent != null && agent.pathStatus == NavMeshPathStatus.PathInvalid;
-        }
-        public static bool IsAgentOnNavMesh(NavMeshAgent agent)
-        {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return false;
             }
-            return agent.isOnNavMesh;
+            return navAgent.isOnNavMesh;
         }
-        public static bool IsAgentSightToTarget(NavMeshAgent agent, Vector3 target)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent has line of sight to the specified target position on the NavMesh.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for line of sight.</param>
+        /// <param name="target">The target position to check line of sight to.</param>
+        /// <returns>True if the agent has line of sight to the target, otherwise false.</returns>
+        public static bool HasLineOfSightToTarget(NavMeshAgent navAgent, Vector3 target)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return false;
             }
-            NavMeshHit hit;
-            return NavMesh.Raycast(agent.transform.position, target, out hit, NavMesh.AllAreas);
-        }
 
-        public static void SetAgentSize(NavMeshAgent agent, float height, float radius)
-        {
-            if (agent == null)
-            {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
-            }
-            agent.height = height;
-            agent.radius = radius;
+            NavMeshHit hit;
+            return NavMesh.Raycast(navAgent.transform.position, target, out hit, NavMesh.AllAreas);
         }
-        public static void SetAgentHeightAndBaseOffset(NavMeshAgent agent, float height, float baseOffset)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent currently has a pending path calculation.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for pending path calculation.</param>
+        /// <returns>True if a path calculation is pending, otherwise false.</returns>
+        public static bool HasPendingPath(NavMeshAgent navAgent)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
-                return;
+                return false;
             }
-            agent.height = height;
-            agent.baseOffset = baseOffset;
+
+            return navAgent.pathPending;
         }
-        public static void SetObstacleAvoidance(NavMeshAgent agent, bool isEnabled, float avoidanceRadius = 0.5f)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent is currently stopped.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for stopped state.</param>
+        /// <returns>True if the agent is stopped, otherwise false.</returns>
+        public static bool IsAgentStopped(NavMeshAgent navAgent)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
-                return;
+                return false;
             }
-            agent.obstacleAvoidanceType = isEnabled ? ObstacleAvoidanceType.HighQualityObstacleAvoidance : ObstacleAvoidanceType.NoObstacleAvoidance;
-            agent.radius = avoidanceRadius;
+
+            return navAgent.isStopped;
         }
-        public static void SetAgentStoppingDistance(NavMeshAgent agent, float stoppingDistance)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent is currently on an off-mesh link.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for off-mesh link presence.</param>
+        /// <returns>True if the agent is on an off-mesh link, otherwise false.</returns>
+        public static bool IsAgentOnOffMeshLink(NavMeshAgent navAgent)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
-                return;
+                return false;
             }
-            agent.stoppingDistance = stoppingDistance;
+
+            return navAgent.isOnOffMeshLink;
         }
-        public static void SetAgentVelocity(NavMeshAgent agent, Vector3 velocity)
+        /// <summary>
+        /// Checks if the provided NavMeshAgent currently has a stale path.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to check for a stale path.</param>
+        /// <returns>True if the agent has a stale path, otherwise false.</returns>
+        public static bool HasStalePath(NavMeshAgent navAgent)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
-                return;
+                return false;
             }
-            agent.velocity = velocity;
+
+            return navAgent.isPathStale;
         }
-        public static void SetAgentAreaMask(NavMeshAgent agent, int areaMask)
+        //what bools are we missing?
+
+
+        /// <summary>
+        /// Sets the size of the provided NavMeshAgent by modifying its height and radius properties.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent whose size should be set.</param>
+        /// <param name="height">The new height value for the agent.</param>
+        /// <param name="radius">The new radius value for the agent.</param>
+        public static void SetSize(NavMeshAgent navAgent, float height, float radius)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.areaMask = areaMask;
+
+            navAgent.height = height;
+            navAgent.radius = radius;
         }
-        public static void SetAgentAcceleration(NavMeshAgent agent, float acceleration)
+        /// <summary>
+        /// Sets the height and base offset of the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent whose height and base offset should be set.</param>
+        /// <param name="height">The new height value for the agent.</param>
+        /// <param name="baseOffset">The new base offset value for the agent.</param>
+        public static void SetHeightAndBaseOffset(NavMeshAgent navAgent, float height, float baseOffset)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.acceleration = acceleration;
+
+            navAgent.height = height;
+            navAgent.baseOffset = baseOffset;
         }
-        public static void SetAgentAutoBraking(NavMeshAgent agent, bool autoBraking)
+        /// <summary>
+        /// Configures the obstacle avoidance settings for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent to configure obstacle avoidance for.</param>
+        /// <param name="isEnabled">True to enable obstacle avoidance, False to disable it.</param>
+        /// <param name="avoidanceRadius">The avoidance radius for the agent (optional, default is 0.5).</param>
+        public static void ConfigureObstacleAvoidance(NavMeshAgent navAgent, bool isEnabled, float avoidanceRadius = 0.5f)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.autoBraking = autoBraking;
+
+            navAgent.obstacleAvoidanceType = isEnabled ? ObstacleAvoidanceType.HighQualityObstacleAvoidance : ObstacleAvoidanceType.NoObstacleAvoidance;
+            navAgent.radius = avoidanceRadius;
         }
-        public static void SetAgentAutoRepath(NavMeshAgent agent, bool autoRepath)
+        /// <summary>
+        /// Sets the stopping distance for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the stopping distance is being set.</param>
+        /// <param name="stoppingDistance">The new stopping distance value for the agent.</param>
+        public static void SetStoppingDistance(NavMeshAgent navAgent, float stoppingDistance)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.autoRepath = autoRepath;
+
+            navAgent.stoppingDistance = stoppingDistance;
         }
-        public static void SetAgentAngularSpeed(NavMeshAgent agent, float angularSpeed)
+        /// <summary>
+        /// Sets the velocity of the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the velocity is being set.</param>
+        /// <param name="newVelocity">The new velocity vector for the agent.</param>
+        public static void SetVelocity(NavMeshAgent navAgent, Vector3 newVelocity)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.angularSpeed = angularSpeed;
+
+            navAgent.velocity = newVelocity;
         }
-        public static void SetAgentSpeed(NavMeshAgent agent, float newSpeed)
+        /// <summary>
+        /// Sets the area mask for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the area mask is being set.</param>
+        /// <param name="newAreaMask">The new area mask value for the agent.</param>
+        public static void SetAreaMask(NavMeshAgent navAgent, int newAreaMask)
         {
-            if (agent == null)
+            if (navAgent == null)
             {
                 Debug.LogError("NavMeshAgent is null.");
                 return;
             }
-            agent.speed = newSpeed;
-        }      
+
+            navAgent.areaMask = newAreaMask;
+        }
+        /// <summary>
+        /// Sets the acceleration for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the acceleration is being set.</param>
+        /// <param name="newAcceleration">The new acceleration value for the agent.</param>
+        public static void SetAcceleration(NavMeshAgent navAgent, float newAcceleration)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            navAgent.acceleration = newAcceleration;
+        }
+        /// <summary>
+        /// Sets the auto-braking behavior for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the auto-braking behavior is being set.</param>
+        /// <param name="enableAutoBraking">True to enable auto-braking, False to disable it.</param>
+        public static void SetAutoBraking(NavMeshAgent navAgent, bool enableAutoBraking)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            navAgent.autoBraking = enableAutoBraking;
+        }
+        /// <summary>
+        /// Sets the auto-repath behavior for the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent for which the auto-repath behavior is being set.</param>
+        /// <param name="enableAutoRepath">True to enable auto-repath, False to disable it.</param>
+        public static void SetAutoRepath(NavMeshAgent navAgent, bool enableAutoRepath)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            navAgent.autoRepath = enableAutoRepath;
+        }
+        /// <summary>
+        /// Sets the angular speed of the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent whose angular speed is to be set.</param>
+        /// <param name="newAngularSpeed">The new angular speed to assign to the agent.</param>
+        public static void SetAngularSpeed(NavMeshAgent navAgent, float newAngularSpeed)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            navAgent.angularSpeed = newAngularSpeed;
+        }
+        /// <summary>
+        /// Sets the speed of the provided NavMeshAgent.
+        /// </summary>
+        /// <param name="navAgent">The NavMeshAgent whose speed is to be set.</param>
+        /// <param name="newSpeed">The new speed to assign to the agent.</param>
+        public static void SetSpeed(NavMeshAgent navAgent, float newSpeed)
+        {
+            if (navAgent == null)
+            {
+                Debug.LogError("NavMeshAgent is null.");
+                return;
+            }
+
+            navAgent.speed = newSpeed;
+        }
         //what other methods could we add here?
     }
 }
