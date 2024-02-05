@@ -48,23 +48,6 @@ namespace UnityMeshAgents
             navAgent.transform.Rotate(rotation, Space.World);
         }
         /// <summary>
-        /// Sets the destination for a NavMeshAgent.
-        /// </summary>
-        /// <param name="navAgent">The NavMeshAgent whose destination is being set.</param>
-        /// <param name="destination">The destination to set for the agent.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void SetDestination(NavMeshAgent navAgent, Vector3 destination)
-        {
-            if (navAgent == null)
-            {
-                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
-            }
-
-            // Optional: Add additional validation for destination if necessary
-
-            navAgent.SetDestination(destination);
-        }
-        /// <summary>
         /// Sets the destination for a NavMeshAgent with an offset.
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent to which Set a Destination.</param>
@@ -80,21 +63,6 @@ namespace UnityMeshAgents
             navAgent.SetDestination(destination + offset);
         }
         /// <summary>
-        /// Finds the closest navmesh edge to the NavMeshAgent and outputs the result.
-        /// </summary>
-        /// <param name="hit">The hit information for the closest edge. This is an output parameter.</param>
-        /// <param name="navAgent">The NavMeshAgent for which the closest edge is being found.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the provided NavMeshAgent is null.</exception>
-        public static void FindClosestNavMeshEdge(NavMeshAgent navAgent, out NavMeshHit hit)
-        {
-            if (navAgent == null)
-            {
-                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
-            }
-
-            navAgent.FindClosestEdge(out hit);
-        }
-        /// <summary>
         /// Toggle the NavMeshAgent's pathfinding on or off.
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent to control.</param>
@@ -107,20 +75,6 @@ namespace UnityMeshAgents
                 throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
             }
             navAgent.enabled = isEnabled;
-        }
-        /// <summary>
-        /// Stops the NavMeshAgent from moving and clears its current path.
-        /// </summary>
-        /// <param name="navAgent">The NavMeshAgent to be reset.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the NavMeshAgent is null.</exception>
-        public static void ResetPath(NavMeshAgent navAgent)
-        {
-            if (navAgent == null)
-            {
-                throw new ArgumentNullException(nameof(navAgent), "NavMeshAgent cannot be null.");
-            }
-
-            navAgent.ResetPath();
         }
         /// <summary>
         /// Warps the NavMeshAgent to a specified new position.
@@ -154,23 +108,6 @@ namespace UnityMeshAgents
             navAgent.CalculatePath(target, navAgent.path);
         }
         /// <summary>
-        /// Samples a position on the NavMesh that is closest to a specified target direction.
-        /// </summary>
-        /// <param name="navAgent">The NavMeshAgent to use for sampling.</param>
-        /// <param name="targetDirection">The target direction from the agent's current position.</param>
-        /// <param name="maxDistance">The maximum distance to search for a valid position.</param>
-        /// <param name="areaMask">The area mask specifying which NavMesh areas are considered.</param>
-        public static void SamplePositionOnNavMesh(NavMeshAgent navAgent, Vector3 targetDirection, float maxDistance, int areaMask)
-        {
-            if (navAgent == null)
-            {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
-            }
-
-            NavMesh.SamplePosition(targetDirection, out NavMeshHit hit, maxDistance, areaMask);
-        }
-        /// <summary>
         /// Sets whether the provided NavMeshAgent should follow its path or stop.
         /// </summary>
         /// <param name="navAgent">The NavMeshAgent to control.</param>
@@ -184,9 +121,6 @@ namespace UnityMeshAgents
             }
             navAgent.isStopped = !shouldFollowPath;
         }
-        //what bools are we missing?
-
-
         /// <summary>
         /// Checks if the provided NavMeshAgent is currently stopped.
         /// </summary>
@@ -358,9 +292,6 @@ namespace UnityMeshAgents
 
             return navAgent.isPathStale;
         }
-        //what bools are we missing?
-
-
         /// <summary>
         /// Sets the size of the provided NavMeshAgent by modifying its height and radius properties.
         /// </summary>
@@ -377,23 +308,6 @@ namespace UnityMeshAgents
 
             navAgent.height = height;
             navAgent.radius = radius;
-        }
-        /// <summary>
-        /// Sets the height and base offset of the provided NavMeshAgent.
-        /// </summary>
-        /// <param name="navAgent">The NavMeshAgent whose height and base offset should be set.</param>
-        /// <param name="height">The new height value for the agent.</param>
-        /// <param name="baseOffset">The new base offset value for the agent.</param>
-        public static void SetHeightAndBaseOffset(NavMeshAgent navAgent, float height, float baseOffset)
-        {
-            if (navAgent == null)
-            {
-                Debug.LogError("NavMeshAgent is null.");
-                return;
-            }
-
-            navAgent.height = height;
-            navAgent.baseOffset = baseOffset;
         }
         /// <summary>
         /// Configures the obstacle avoidance settings for the provided NavMeshAgent.
